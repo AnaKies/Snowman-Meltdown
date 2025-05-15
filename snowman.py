@@ -1,5 +1,5 @@
 import random
-import grafics
+import ascii_art
 
 # List of secret words
 WORDS = ["python", "git", "github", "snowman", "meltdown"]
@@ -17,7 +17,7 @@ def display_game_state(mistakes, secret_word, guessed_letters):
     :param secret_word: string that should be guessed
     :param guessed_letters: list with letters that the user has already guessed
     """
-    print(grafics.STAGES[mistakes])
+    print(ascii_art.STAGES[mistakes])
     # Build a display version of the secret word.
     display_word = ""
     for letter in secret_word:
