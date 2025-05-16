@@ -101,6 +101,7 @@ def play_game():
                 if restart_game.lower() == "n":
                     break
                 elif restart_game.lower() == "y":
+                    print()
                     mistakes, secret_word, guessed_letters = init_new_game()
                     continue
                 else:
