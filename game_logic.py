@@ -21,14 +21,14 @@ def display_game_state(mistakes, secret_word, guessed_letters):
     :param mistakes: number of mistakes that the user did by guessing the word
     :param secret_word: string that should be guessed
     :param guessed_letters: list with letters that the user has already guessed
-    :return: True if a letter is not in the word, False otherwise.
-    None if the game is over.
+    :return: True if the game is over, None otherwise
     """
     print(ascii_art.STAGES[mistakes])
 
     if mistakes >= len(ascii_art.STAGES) - 1:
         print(f"Game Over! The secret word was: {secret_word}")
-        return None
+        game_is_over = True
+        return game_is_over
 
     # Build a display version of the secret word.
     display_word = ""
@@ -36,11 +36,10 @@ def display_game_state(mistakes, secret_word, guessed_letters):
         if letter in guessed_letters:
             display_word += letter + " "
         else:
-            is_wrong = True
             display_word += "_ "
     print("Word: ", display_word)
     print("\n")
-    return is_wrong
+
 
 def check_wrong_input(user_letter):
     """
@@ -75,19 +74,19 @@ def play_game():
 
     while True:
         try:
-            is_wrong = display_game_state(mistakes, secret_word, guessed_letters)
-
-            if is_wrong is True:
-                mistakes += 1
-            elif is_wrong is None:
+            game_is_over = display_game_state(mistakes, secret_word, guessed_letters)
+            if game_is_over:
                 break
+
             user_letter = input("Guess a letter: ").lower()
-            wrong_input = check_wrong_input(user_letter)
+            wrong_user_input = check_wrong_input(user_letter)
 
-            if wrong_input is False:
+            if wrong_user_input is False:
                 guessed_letters.append(user_letter)
-                print("You guessed:", user_letter)
 
+            letter_is_in_secret_word = user_letter in secret_word
+
+            if not letter_is_in_secret_word is True:
+                mistakes += 1
         except Exception as error:
             print(f"Error in program: {error}")
-
