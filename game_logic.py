@@ -25,6 +25,7 @@ def display_game_state(mistakes, secret_word, guessed_letters):
     """
     print(ascii_art.STAGES[mistakes])
 
+    # last stage of a snowman (hat) means game over
     if mistakes >= len(ascii_art.STAGES) - 1:
         print(f"Game Over! The secret word was: {secret_word}")
         game_is_over = True
