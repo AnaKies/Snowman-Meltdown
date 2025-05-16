@@ -21,15 +21,14 @@ def display_game_state(mistakes, secret_word, guessed_letters):
     :param mistakes: number of mistakes that the user did by guessing the word
     :param secret_word: string that should be guessed
     :param guessed_letters: list with letters that the user has already guessed
-    :return: True if the game is over, None otherwise
+    :return: True if the game is won, False if game is over, None otherwise
     """
     print(ascii_art.STAGES[mistakes])
 
     # last stage of a snowman (hat) means game over
     if mistakes >= len(ascii_art.STAGES) - 1:
         print(f"Game Over! The secret word was: {secret_word}")
-        game_is_over = True
-        return game_is_over
+        return False # game over
 
     # Build a display version of the secret word.
     display_word = ""
@@ -40,6 +39,12 @@ def display_game_state(mistakes, secret_word, guessed_letters):
             display_word += "_ "
     print("Word: ", display_word)
     print("\n")
+
+    if not "_" in display_word:
+        print(f"Congratulations, you saved the snowman!")
+        game_is_won = True
+        return True # game is won
+    return None # game go further
 
 
 def check_wrong_input(user_letter):
