@@ -83,9 +83,6 @@ def init_new_game():
     """
     secret_word = get_random_word()
     print(Fore.MAGENTA + "❄️Welcome to Snowman Meltdown!")
-    print(Fore.LIGHTYELLOW_EX +
-          "Secret word selected: " +
-          secret_word)  # for testing, later remove this line
     guessed_letters = []
     mistakes = 0
 
