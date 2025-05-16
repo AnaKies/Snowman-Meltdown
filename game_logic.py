@@ -46,14 +46,20 @@ def check_wrong_input(user_letter):
     """
     Checks if user enters a single letter, and it is not a digit.
     :param user_letter: guessed letter from user input
+    :return: True if the user did a wrong input, False otherwise.
     """
     if len(user_letter) != 1:
-        raise Exception(f"Only single characters are allowed! You entered {user_letter}.")
-        return
+        print(f"Only single characters are allowed! You entered {user_letter}.")
+        wrong_input = True
+        return wrong_input
 
     if user_letter.isdigit():
-        raise Exception(f"Digits are not allowed! You entered {user_letter}.")
+        print(f"Digits are not allowed! You entered {user_letter}.")
+        wrong_input = True
+        return wrong_input
 
+    wrong_input = False
+    return wrong_input
 
 def play_game():
     """
@@ -68,14 +74,20 @@ def play_game():
     print("Secret word selected: " + secret_word)  # for testing, later remove this line
 
     while True:
-        is_wrong = display_game_state(mistakes, secret_word, guessed_letters)
+        try:
+            is_wrong = display_game_state(mistakes, secret_word, guessed_letters)
 
-        if is_wrong is True:
-            mistakes += 1
-        elif is_wrong is None:
-            break
+            if is_wrong is True:
+                mistakes += 1
+            elif is_wrong is None:
+                break
+            user_letter = input("Guess a letter: ").lower()
+            wrong_input = check_wrong_input(user_letter)
 
-        user_letter = input("Guess a letter: ").lower()
-        guessed_letters.append(user_letter)
-        print("You guessed:", user_letter)
-        check_wrong_input(user_letter)
+            if wrong_input is False:
+                guessed_letters.append(user_letter)
+                print("You guessed:", user_letter)
+
+        except Exception as error:
+            print(f"Error in program: {error}")
+
