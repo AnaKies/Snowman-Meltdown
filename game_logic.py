@@ -68,26 +68,44 @@ def check_wrong_input(user_letter):
     wrong_input = False
     return wrong_input
 
+
+def init_new_game():
+    """
+    Initializes a new game of snowman.
+    :return: secret word as string, guessed letters as list, mistakes as integer
+    """
+    secret_word = get_random_word()
+    print(Fore.MAGENTA + "❄️Welcome to Snowman Meltdown!")
+    print(Fore.LIGHTYELLOW_EX + "Secret word selected: " + secret_word)  # for testing, later remove this line
+    guessed_letters = []
+    mistakes = 0
+
+    return mistakes, secret_word, guessed_letters
+
+
+
 def play_game():
     """
     Runs the game logic and displays the game state.
     :return: None
     """
-    secret_word = get_random_word()
-    guessed_letters = []
-    mistakes = 0
     init(autoreset = True) # initialise colorama module with reset of current color
-
-    print(Fore.MAGENTA +  "❄️Welcome to Snowman Meltdown!")
-    print(Fore.LIGHTYELLOW_EX + "Secret word selected: " + secret_word)  # for testing, later remove this line
-
+    mistakes, secret_word, guessed_letters = init_new_game()
     while True:
         try:
             game_is_won = display_game_state(mistakes, secret_word, guessed_letters)
 
             # stop the game if it was won or lost
             if game_is_won is not None:
-                break
+                restart_game = input("Restart game? Y/N? ")
+                if restart_game.lower() == "n":
+                    break
+                elif restart_game.lower() == "y":
+                    mistakes, secret_word, guessed_letters = init_new_game()
+                    continue
+                else:
+                    print("Print Y or N")
+                    continue
 
             user_letter = input("Guess a letter: ").lower()
             wrong_user_input = check_wrong_input(user_letter)
