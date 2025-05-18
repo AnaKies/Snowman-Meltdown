@@ -52,26 +52,27 @@ def display_game_state(mistakes, secret_word, guessed_letters):
     return None  # game go further
 
 
-def check_wrong_input(user_letter):
+def user_input_is_wrong(user_letter, guessed_letters):
     """
     Checks if a user enters a single letter, and it is not a digit.
+    :param guessed_letters: letters that the user has already guessed.
     :param user_letter: guessed a letter from user input
     :return: True if the user did a wrong input, False otherwise.
     """
+    if user_letter in guessed_letters:
+        print(Fore.RED + f"You have already guessed the letter {user_letter}.")
+        return None
+
     if len(user_letter) != 1:
         print(Fore.RED +
               f"Only single characters are allowed! "
               f"You entered {user_letter}.")
-        wrong_input = True
-        return wrong_input
+        return True
 
     if user_letter.isdigit():
         print(Fore.RED + f"Digits are not allowed! You entered {user_letter}.")
-        wrong_input = True
-        return wrong_input
-
-    wrong_input = False
-    return wrong_input
+        return True
+    return False
 
 
 def init_new_game():
@@ -92,6 +93,12 @@ def init_new_game():
 def play_game():
     """
     Runs the game logic and displays the game state.
+    If the user inputs the wrong letter, the snowman melts.
+    If the user inputs a number or a string or the same letter,
+    a message is displayed. It does not count as a mistake.
+    The game is won when the user guesses all the letters
+    while the snowman still has an eye.
+    The game is over when the snowman reaches the last stage with an eye.
     :return: None
     """
     # initialise colorama module with reset of current color
@@ -115,14 +122,15 @@ def play_game():
                 continue
 
             user_letter = input("Guess a letter: ").lower()
-            wrong_user_input = check_wrong_input(user_letter)
+            wrong_user_input = user_input_is_wrong(user_letter,
+                                                   guessed_letters)
 
             if wrong_user_input is False:
                 guessed_letters.append(user_letter)
+                letter_is_in_secret_word = user_letter in secret_word
 
-            letter_is_in_secret_word = user_letter in secret_word
+                if letter_is_in_secret_word is not True:
+                    mistakes += 1
 
-            if letter_is_in_secret_word is not True:
-                mistakes += 1
         except Exception as error:
             print(Fore.RED + f"Error in program: {error}")
